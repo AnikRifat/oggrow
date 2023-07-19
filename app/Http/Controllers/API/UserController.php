@@ -17,7 +17,7 @@ class UserController extends Controller
         $users = User::paginate(10);
 
         // Broadcast the user data using the UserDataUpdated event
-        broadcast(new UserDataUpdated($users))->toOthers();
+        // broadcast(new UserDataUpdated($users))->toOthers();
 
         return response()->json($users);
     }
