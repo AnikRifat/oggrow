@@ -14,5 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
+});
+Route::middleware('auth:api')->group(function () {
+    Route::get('users', 'UserController@index');
+    Route::get('users/{user}', 'UserController@show');
+    // Other API routes for users if needed
 });
