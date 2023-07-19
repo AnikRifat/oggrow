@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\UserDataUpdated;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,10 +16,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
+    $users = User::Paginate(10);
+    return view('index', compact('users'));
 });
-Route::middleware('auth:api')->group(function () {
-    Route::get('users', 'UserController@index');
-    Route::get('users/{user}', 'UserController@show');
-    // Other API routes for users if needed
+
+Route::get('/test', function () {
+    $users = User::Paginate(10);
+    return view('test', compact('users'));
+});
+
+Route::get('/triggerEvent', function () {
+    $users = User::take(10);
+
+    // Dispatch the UserDataUpdated event
+    event(new UserDataUpdated($users));
+
+    return response()->json(['message' => 'Event dispatched successfully']);
 });
